@@ -6,9 +6,9 @@ $(document).ready(function () {
   
   // nightcam
   myPhotobooth = new Photobooth($("#nightcam") );
-  //myPhotobooth.setHueOffset(-0.4);
-  //myPhotobooth.setSaturationOffset(0.25);
-  //myPhotobooth.setBrightnessOffset(-0.13);
+  myPhotobooth.setHueOffset(-0.4);
+  myPhotobooth.setSaturationOffset(0.25);
+  myPhotobooth.setBrightnessOffset(-0.13);
   if(!myPhotobooth.isSupported){
     // no support
     $("#startbtn")
@@ -42,23 +42,25 @@ $(document).ready(function () {
   var stagingctx = stagingcanv.getContext('2d');
 
   setInterval(function(){
-    //greencanv.width = greencanv.width;
-    //greenctx.rect(10, 10, Math.floor(Math.random() * 60), Math.floor(Math.random() * 60));
-    //greenctx.fill()
+    greencanv.width = greencanv.width;
+    greenctx.rect(10, 10, Math.floor(Math.random() * 60), Math.floor(Math.random() * 60));
+    greenctx.fill()
 
     var frame = camctx.getImageData(0, 0, 300, 200);
     if(bluescreen){
       var pixelCount = frame.data.length / 4;
-      //var avgblue = 0;
+      var avgblue = 0;
+      
+      //Worst documentation ever. 
       for(var i=0; i < pixelCount; i++) {
         var redVal = frame.data[ i * 4 ];
         var greenVal = frame.data[ i * 4 + 1];
         var blueVal = frame.data[ i * 4 + 2];
-        //avgblue += blueVal / pixelCount;
+        avgblue += blueVal / pixelCount;
         var alphaVal = frame.data[ i * 4 + 3];
-        //console.log(blueVal);
+        console.log(blueVal);
         if(blueVal > 40 && greenVal < blueVal * 6.5/8 && redVal < blueVal * 4/8){  // && greenVal < 50 && redVal < 50
-          //console.log("blue");
+          console.log("blue");
           frame.data[ i * 4 ] = 0;
           frame.data[ i * 4 + 1 ] = 0;
           frame.data[ i * 4 + 2 ] = 255;
@@ -78,12 +80,12 @@ $(document).ready(function () {
         greenctx.drawImage(backimage, 0, 0, width, Math.round(backimage.height / backimage.width * width));
       }
     }
-    //greenctx.putImageData(frame, 0, 0);
+    greenctx.putImageData(frame, 0, 0);
     stagingcanv.width = stagingcanv.width;
     stagingctx.putImageData(frame, 0, 0);
     var fg = new Image();
     fg.onload = function(){
-      //console.log(fg);
+      console.log(fg);
       greenctx.drawImage(fg, 0, 300);
       if(frameTime){
         frameTime--;
@@ -109,7 +111,7 @@ $(document).ready(function () {
   encoder = new GIFEncoder();
   encoder.setRepeat(0);
   encoder.setDelay(500);
-  //encoder.setTransparent(0x0000FF);
+  encoder.setTransparent(0x0000FF);
   
   // prep for background image
   var blockHandler = function(e){
@@ -124,7 +126,7 @@ $(document).ready(function () {
     if(files && files.length){
       var reader = new FileReader();
       reader.onload = function(e){
-        //document.write('<img src="' + img + '"/>'); Nope. Not right now.
+        document.write('<img src="' + img + '"/>'); Nope. Not right now.
         backimage = new Image();
         backimage.src = e.target.result;
         $(".nobg").css({ display: "none" });
