@@ -14,7 +14,7 @@ $(document).ready(function () {
     $("#startbtn")
       .removeClass("btn-success")
       .addClass("btn-warning")
-      .html("Try in Chrome");
+      .html("Try this in the Canary version of Google Chrome.");
     return;
   }
   $("canvas").addClass("hide");
